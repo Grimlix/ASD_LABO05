@@ -67,7 +67,8 @@ void printAndEmptyStack(const string& name, StackList<T>& s) {
 #endif
 
 int main() {
-  
+
+
 #if TEST_NR > 0
   {
     cout << "T1 - constructeur par défaut et fonction empty() \n";
@@ -75,20 +76,24 @@ int main() {
     cout << "empty() : " << boolalpha << s.empty() << "\n\n";
   }
 #endif
-  
+
+
+
 #if TEST_NR > 1
   {
     cout << "T2 - push, pop, top \n";
     StackList<int> s;
     for(int i = 0; i < 5; ++i)
       s.push(i*i);
+
     s.top() = 42;
-    
-    printAndEmptyStack("s",s);
+    s.pop();
+    cout << s.top();
+    //printAndEmptyStack("s",s);
     cout << "\n";
   }
 #endif
-
+/*
 #if TEST_NR > 2
   {
     cout << "T3 - exceptions \n";
@@ -144,33 +149,33 @@ int main() {
     StackList<int> s1;
     for(int i = 0; i < 5; ++i)
       s1.push(i*i);
-    
+
     StackList<int> s2;
     for(int i = 0; i < 5; ++i)
       s2.push(-i);
     s2 = s1;
-    
+
     printAndEmptyStack("s1", s1);
     printAndEmptyStack("s2", s2);
     cout << "\n\n";
   }
 #endif
 
-  
+
 #if TEST_NR > 6
   {
     cout << "T7 - const correctness \n";
     StackList<int> s1;
     for(int i = 0; i < 5; ++i)
       s1.push(i*i);
-    
+
     const auto s2 = s1;
     cout << s2.top() << " " << s2.empty();
-    
+
     cout << "\n\n";
   }
 #endif
-  
+
 #if TEST_NR > 7
   {
     cout << "T8 - strong garantee push \n";
@@ -178,7 +183,7 @@ int main() {
     StackList<Boom> s;
     for(int i = 0; i < 5; ++i)
       s.push(i*i);
-    
+
     try {
       Boom::explosive = true;
       s.push(42);
@@ -188,7 +193,7 @@ int main() {
     cout << "\n";
   }
 #endif
-  
+
 #if TEST_NR > 8
   {
     cout << "T9 - strong garantee copy \n";
@@ -196,11 +201,11 @@ int main() {
     StackList<Boom> s1;
     for(int i = 0; i < 5; ++i)
       s1.push(i*i);
-    
+
     StackList<Boom> s2;
     for(int i = 0; i < 4; ++i)
       s2.push(i*2);
-    
+
     try {
       Boom::explosive = true;
       s2 = s1;
@@ -211,8 +216,8 @@ int main() {
     cout << "\n";
   }
 #endif
-  
-  
+
+
 #if TEST_NR > 9
   {
     cout << "T10 - weak garantee copy constructor \n";
@@ -221,7 +226,7 @@ int main() {
     for(int i = 0; i < 5; ++i)
       s1.push(i*i);
     cout << endl;
-    
+
     try {
       TimeBomb::timer = 3;
       StackList<TimeBomb> s2 = s1;
@@ -231,7 +236,7 @@ int main() {
   }
   cout << endl << endl;
 #endif
-  
+
 #if TEST_NR > 9
   {
     cout << "T10 - weak garantee operator= \n";
@@ -240,7 +245,7 @@ int main() {
     for(int i = 0; i < 5; ++i)
       s1.push(i*i);
     cout << endl;
-    
+
     {
       StackList<TimeBomb> s2;
       s2.push(1);
@@ -256,8 +261,7 @@ int main() {
     cout << endl;
   }
   cout << endl;
-  
+
 #endif
-  
-  
+*/
 }
