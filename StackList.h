@@ -6,7 +6,7 @@
 #define StackList_h
 
 #include <utility>
-
+#include <iostream>
 namespace asd1 {
 
   class StackEmptyException { };
@@ -37,30 +37,78 @@ namespace asd1 {
 //
 // Cette classe doit offrir garanties faible et forte pour toutes ses
 // fonctionalités
+
     //Constructeur
     StackList(){
         topNode = nullptr;
     }
-    bool empty(){
+    //Constructeur par copie
+    StackList(const StackList& s){
+        //Faire des nouvelles allocations mémoires pour tous les éléments de la liste
+        if(!s.empty()){
+            Node * top = new Node{nullptr,s.topNode->val};
+            Node * currentNode = top;
+            Node * nextTop = s.topNode->nxt;
+
+            while(nextTop != nullptr){
+                currentNode->nxt = new Node{nullptr,nextTop->val};
+                nextTop = nextTop->nxt;
+                currentNode = currentNode->nxt;
+            }
+            topNode = top;
+        }
+    }
+    //Destructeur
+    ~StackList(){
+        while(!empty()){
+            Node * next = topNode->nxt;
+            delete [] topNode ;
+            topNode = next;
+        }
+    }
+
+    //Operateur =
+    void operator = (const StackList& s){
+        //On check si les valeurs sont possible à copier
+        try{
+            StackList<value_type> tmp = s;
+        }catch(...){
+            throw "BOOOM?!";
+        }
+        //On détruit la liste
+        this->StackList::~StackList();
+        //On reconstruit la liste via le constructeur par copie
+        new(this) StackList<value_type>(s);
+    }
+
+    bool empty() const noexcept {
         if(topNode == nullptr)
             return true;
         return false;
     }
     void push(const_reference val){
-        Node n ;
-        n.val = val;
-        Node* next = topNode;
-        topNode = &n;
-        (*topNode).nxt = next;
+        Node * n = new Node{topNode,val} ;
+        topNode = n;
     }
     void pop(){
-        topNode = (*topNode).nxt;
+        if(empty()){
+            throw StackEmptyException();
+        }
+        Node * next = topNode->nxt;
+        delete [] topNode;
+        topNode = next;
     }
     const_reference top() const {
-        return (*topNode).val ;
+        if(empty()){
+            throw StackEmptyException();
+        }
+        return topNode->val ;
     }
+
     reference top() {
-        return (*topNode).val ;
+        if(empty())
+            throw StackEmptyException();
+        return topNode->val ;
     }
 };
 

@@ -68,7 +68,6 @@ void printAndEmptyStack(const string& name, StackList<T>& s) {
 
 int main() {
 
-
 #if TEST_NR > 0
   {
     cout << "T1 - constructeur par défaut et fonction empty() \n";
@@ -77,23 +76,19 @@ int main() {
   }
 #endif
 
-
-
 #if TEST_NR > 1
   {
     cout << "T2 - push, pop, top \n";
     StackList<int> s;
     for(int i = 0; i < 5; ++i)
       s.push(i*i);
-
     s.top() = 42;
-    s.pop();
-    cout << s.top();
-    //printAndEmptyStack("s",s);
+
+    printAndEmptyStack("s",s);
     cout << "\n";
   }
 #endif
-/*
+
 #if TEST_NR > 2
   {
     cout << "T3 - exceptions \n";
@@ -209,7 +204,7 @@ int main() {
     try {
       Boom::explosive = true;
       s2 = s1;
-    } catch(...) {
+  } catch(...) {
       printAndEmptyStack("s1", s1);
       printAndEmptyStack("s2", s2);
     }
@@ -263,5 +258,6 @@ int main() {
   cout << endl;
 
 #endif
-*/
+
+
 }
