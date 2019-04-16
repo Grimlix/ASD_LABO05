@@ -49,7 +49,6 @@ namespace asd1 {
             Node * top = new Node{nullptr,s.topNode->val};
             Node * currentNode = top;
             Node * nextTop = s.topNode->nxt;
-
             while(nextTop != nullptr){
                 currentNode->nxt = new Node{nullptr,nextTop->val};
                 nextTop = nextTop->nxt;
@@ -60,10 +59,9 @@ namespace asd1 {
     }
     //Destructeur
     ~StackList(){
+        //On delete tous les items de la stack
         while(!empty()){
-            Node * next = topNode->nxt;
-            delete [] topNode ;
-            topNode = next;
+            pop();
         }
     }
 
