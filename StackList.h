@@ -61,7 +61,9 @@ namespace asd1 {
     ~StackList(){
         //On delete tous les items de la stack
         while(!empty()){
-            pop();
+            Node * toDelete = topNode;
+            topNode = topNode->nxt;
+            delete toDelete;
         }
     }
 
