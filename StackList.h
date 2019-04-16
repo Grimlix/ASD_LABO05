@@ -7,6 +7,7 @@
 
 #include <utility>
 #include <iostream>
+#include <exception>
 namespace asd1 {
 
   class StackEmptyException { };
@@ -39,22 +40,28 @@ namespace asd1 {
 // fonctionalités
 
     //Constructeur
-    StackList(){
-        topNode = nullptr;
-    }
+    StackList() : topNode(nullptr){}
     //Constructeur par copie
     StackList(const StackList& s){
         //Faire des nouvelles allocations mémoires pour tous les éléments de la liste
         if(!s.empty()){
+
             Node * top = new Node{nullptr,s.topNode->val};
             Node * currentNode = top;
             Node * nextTop = s.topNode->nxt;
-            while(nextTop != nullptr){
-                currentNode->nxt = new Node{nullptr,nextTop->val};
-                nextTop = nextTop->nxt;
-                currentNode = currentNode->nxt;
+            //Utilisation du try/bloc pour éviter une "fuite de mémoire" en cas d'exception(s)
+            try{
+                while(nextTop != nullptr){
+                    currentNode->nxt = new Node{nullptr,nextTop->val};
+                    nextTop = nextTop->nxt;
+                    currentNode = currentNode->nxt;
+                }
+                topNode = top;
+            }catch(...){
+                delete top;
+                delete currentNode;
+                throw ;
             }
-            topNode = top;
         }
     }
     //Destructeur
@@ -66,14 +73,13 @@ namespace asd1 {
             delete toDelete;
         }
     }
-
     //Operateur =
     void operator = (const StackList& s){
         //On check si les valeurs sont possible à copier
         try{
             StackList<value_type> tmp = s;
         }catch(...){
-            throw "BOOOM?!";
+            throw;
         }
         //On détruit la liste
         this->StackList::~StackList();
@@ -94,9 +100,9 @@ namespace asd1 {
         if(empty()){
             throw StackEmptyException();
         }
-        Node * next = topNode->nxt;
-        delete [] topNode;
-        topNode = next;
+        Node * toDelete = topNode;
+        topNode = topNode->nxt;
+        delete toDelete;
     }
     const_reference top() const {
         if(empty()){
